@@ -281,7 +281,7 @@ class GC100:
                 # wait_closed() does not seem to actually wait until the socket is
                 # completely closed.  Consequenctly, attempting to open a new connection
                 # on the same port too quickly will fail.  Hence the kludgy "sleep" hack:
-                 await asyncio.sleep(0.01)
+                await asyncio.sleep(0.01)
             return response
 
 

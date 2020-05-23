@@ -38,7 +38,7 @@ class IR_out:
         response = await self._gc100.raw_request(cmd)
         return response # @todo is there any reason to examine/use the response?
 
-    async def sendir(self, addr, freq, code, id=1, count=1, offset=3):
+    async def sendir(self, freq, code, id=1, count=1, offset=3):
         response = await self._gc100.sendir(self._addr, freq, code, id, count, offset)
         return response # @todo ditto.
         

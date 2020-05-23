@@ -279,9 +279,9 @@ class GC100:
                 w.close()
                 await w.wait_closed()
                 # wait_closed() does not seem to actually wait until the socket is
-                # completely closed.  Consequenctly, attempting to open a new connection
+                # completely closed.  Consequently, attempting to open a new connection
                 # on the same port too quickly will fail.  Hence the kludgy "sleep" hack:
-                 await asyncio.sleep(0.01)
+                await asyncio.sleep(0.01)
             return response
 
 
@@ -380,8 +380,8 @@ class GC100:
         """Send an IR command.
 
         This will construct the command for the designated connector 'addr'
-        based on the carrier frequency (in Hz), request ID, repeat count, and 
-        repeat offest (see the API documentation for details), and the on/off 
+        based on the carrier frequency (in Hz), request ID, repeat count,  
+        repeat offset (see the API documentation for details), and the on/off 
         code pattern.
         """
         CMD = self.format_sendir(addr, freq, code, id, count, offset)

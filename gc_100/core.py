@@ -140,7 +140,7 @@ class GC100:
         token, but excluding the trailing CR.  This will return a dict with the component
         values for the connector address and mode.
         """
-        tokens = state.split(SEP)
+        tokens = ir.split(SEP)
         if tokens[0] != 'IR':
             return {}
         return {'addr': tokens[1],

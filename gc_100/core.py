@@ -221,20 +221,26 @@ class GC100:
             return response.decode('ascii')
         else:
             # we don't have a complete response; go get more
-            data = await reader.read(1024)
-            if not data:
-                # socket closed on us; return whatever we have.
-                # Note that this may be a mistake.  If the caller/client doesn't
-                # realize that the connection is broken, we'll just spin around here
-                # constantly returning nothing.  Keep an eye on it.
+            try:
+                data = await asyncio.wait_for( reader.read(1024), timeout=1.0 )
+                if not data:
+                    # socket closed on us; return whatever we have.
+                    # Note that this may be a mistake.  If the caller/client doesn't
+                    # realize that the connection is broken, we'll just spin around here
+                    # constantly returning nothing.  Keep an eye on it.
+                    response = self._partial
+                    self._partial = b''
+                    return response.decode('ascii')
+                else:
+                    # append data read and see if there's a complete response in there.
+                    self._partial += data
+                    return await self.recv_response(reader)
+            except asyncio.TimeoutError:
+                # didn't get any more data.
+                # return what we have.
                 response = self._partial
                 self._partial = b''
                 return response.decode('ascii')
-            else:
-                # append data read and see if there's a complete response in there.
-                self._partial += data
-                return await self.recv_response(reader)
-
             
     async def raw_command(self, data):
         """Send a command (not expecting a response).
